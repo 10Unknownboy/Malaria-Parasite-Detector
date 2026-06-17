@@ -1,3 +1,25 @@
+# =============================================================================
+# Project-specific ignores
+# =============================================================================
+
+# Dataset (too large for git)
+data/
+!data/.gitkeep
+
+# Trained model weights
+models/*.pth
+
+# Generated results and reports
+results/
+reports/
+
+# Jupyter notebook checkpoints
+.ipynb_checkpoints/
+
+# =============================================================================
+# Python standard ignores
+# =============================================================================
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

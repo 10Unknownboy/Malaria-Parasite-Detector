@@ -104,8 +104,7 @@ def train_model(
         model.parameters(), lr=learning_rate, weight_decay=weight_decay,
     )
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
-        optimizer, mode="min", patience=lr_patience, factor=lr_factor,
-        verbose=False,
+        optimizer, mode="min", patience=lr_patience, factor=lr_factor
     )
 
     # ── mixed‑precision scaler (no‑op on CPU) ─────────────────────

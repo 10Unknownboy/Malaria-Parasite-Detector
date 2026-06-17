@@ -38,6 +38,7 @@ from src.evaluate import evaluate_model, compare_models, save_all_metadata
 from src.robustness import run_all_robustness
 from src.gradcam import generate_gradcam_grid
 from src.report_generator import generate_report
+from src.data_insights import generate_data_insights
 
 def main():
     print(f"{'='*50}")
@@ -58,10 +59,7 @@ def main():
     # 2. Data Preparation
     print("\n--- 2. Data Preparation ---")
     print_class_balance(DATA_DIR)
-    train_paths, val_paths, test_paths, train_labels, val_labels, test_labels = create_data_splits(DATA_DIR)
-    train_loader, val_loader, test_loader = get_dataloaders(
-        train_paths, val_paths, test_paths, train_labels, val_labels, test_labels
-    )
+    train_loader, val_loader, test_loader, _, _, _ = get_dataloaders(DATA_DIR)
     
     # 3. Initialize Models
     print("\n--- 3. Initialize Models ---")

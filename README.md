@@ -138,6 +138,21 @@ Malaria Parasite Detector/
    - After training on Colab, download the exported files from Google Drive
    - Place all `.pth` and `.json` files into the `models/` folder
 
+### Local Training (GPU recommended)
+
+If you have a local NVIDIA GPU (or don't mind waiting for CPU training), you can run the exact same pipeline locally without using Google Colab:
+
+1. **Activate the virtual environment**:
+   ```bash
+   env\Scripts\activate
+   ```
+
+2. **Run the local training orchestrator**:
+   ```bash
+   python run_training_local.py
+   ```
+   This script will automatically execute all sanity checks, data splitting, model training, evaluation, robustness testing, Grad-CAM generation, and report building. All results will be saved exactly as they would be in the Colab workflow.
+
 ### Google Colab Training
 
 Since you don't have a local GPU, training is done entirely on Google Colab:

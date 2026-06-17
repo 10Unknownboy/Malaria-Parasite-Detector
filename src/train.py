@@ -150,7 +150,7 @@ def train_model(
 
             optimizer.zero_grad()
 
-            with autocast(device_type=device.type, enabled=amp_enabled):
+            with autocast(enabled=amp_enabled):
                 outputs = model(images)
                 loss = criterion(outputs, labels)
 
@@ -248,7 +248,7 @@ def _evaluate_epoch(
         images = images.to(device, non_blocking=True)
         labels = labels.to(device, non_blocking=True).unsqueeze(1)
 
-        with autocast(device_type=device.type, enabled=amp_enabled):
+        with autocast(enabled=amp_enabled):
             outputs = model(images)
             loss = criterion(outputs, labels)
 

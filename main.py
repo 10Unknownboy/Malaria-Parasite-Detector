@@ -58,6 +58,7 @@ def main():
     
     # 2. Data Preparation
     print("\n--- 2. Data Preparation ---")
+    generate_data_insights(DATA_DIR)
     print_class_balance(DATA_DIR)
     train_loader, val_loader, test_loader, _, _, _ = get_dataloaders(DATA_DIR)
     

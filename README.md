@@ -155,32 +155,24 @@ If you have a local NVIDIA GPU (or don't mind waiting for CPU training), you can
 
 ### Google Colab Training
 
-Since you don't have a local GPU, training is done entirely on Google Colab:
+You can train the models on Google Colab using the provided notebook which handles downloading data, training, and exposing a web dashboard:
 
 1. **Upload the notebook**:
-   - Upload `notebooks/malaria_training.ipynb` to Google Colab
+   - Upload `notebooks/malaria_training.ipynb` to Google Colab.
 
 2. **Enable GPU**:
-   - Go to `Runtime` → `Change runtime type` → Select `T4 GPU`
+   - Go to `Runtime` → `Change runtime type` → Select `T4 GPU`.
 
-3. **Prepare Kaggle API key**:
-   - Go to [Kaggle Account Settings](https://www.kaggle.com/settings)
-   - Click "Create New Token" to download `kaggle.json`
-   - You'll upload this file when prompted by the notebook
+3. **Run the Notebook Cells**:
+   - **Cell 1**: Clones the GitHub repository and installs dependencies.
+   - **Cell 2**: Downloads the dataset via `kagglehub` (no API key required).
+   - **Cell 3**: Runs the training pipeline (`python main.py`).
+   - **Cell 4**: Packages all models, metrics, and Grad-CAM results into `malaria_models_and_results.zip` and automatically downloads it to your browser.
+   - **Cell 5 (Streamlit Dashboard)**: Prompts you for a free [Ngrok Auth Token](https://dashboard.ngrok.com/get-started/your-authtoken), and gives you a public URL to view the Streamlit web dashboard running directly from Colab!
 
-4. **Run all cells**:
-   - The notebook will:
-     - Download the dataset from Kaggle
-     - Run sanity checks
-     - Train all 3 models with AMP
-     - Evaluate and compare models
-     - Run robustness experiments
-     - Generate Grad-CAM visualizations
-     - Export everything to Google Drive
-
-5. **Download results**:
-   - After completion, find all exports in `Google Drive/MalariaDetector_Export/`
-   - Download and place files in your local `models/` and `results/` folders
+4. **Use Models Locally**:
+   - Extract the downloaded `.zip` file on your local PC.
+   - Paste the contents into your local `models/` folder. All saved `.pth` files, graphs, and JSON reports will be inside.
 
 ---
 

@@ -218,7 +218,7 @@ def _denormalize(tensor: torch.Tensor) -> np.ndarray:
     """Convert a normalised ``(C, H, W)`` tensor to ``(H, W, 3)`` float image."""
     mean = np.array(IMAGENET_MEAN)
     std = np.array(IMAGENET_STD)
-    img = tensor.cpu().numpy().transpose(1, 2, 0)
+    img = tensor.detach().cpu().numpy().transpose(1, 2, 0)
     img = std * img + mean
     return np.clip(img, 0, 1)
 

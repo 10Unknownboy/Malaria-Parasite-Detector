@@ -248,34 +248,34 @@ with tab2:
         else:
             st.info(f"Image not found: {os.path.basename(path)}")
 
-    c_perf1, c_perf2 = st.columns(2)
-    with c_perf1:
-        st.subheader("Training Curves")
-        safe_image(os.path.join(RESULTS_DIR, "training_curves", f"{model_key}_curves.png"), "Training & Validation Performance")
-    with c_perf2:
-        st.subheader("ROC Analysis")
-        safe_image(os.path.join(RESULTS_DIR, "roc_curves", f"{model_key}_roc.png"), "Receiver Operating Characteristic")
+    with st.expander("📈 Training & Performance Curves", expanded=False):
+        c_perf1, c_perf2 = st.columns(2)
+        with c_perf1:
+            st.subheader("Training Curves")
+            safe_image(os.path.join(RESULTS_DIR, "training_curves", f"{model_key}_curves.png"), "Training & Validation Performance")
+        with c_perf2:
+            st.subheader("ROC Analysis")
+            safe_image(os.path.join(RESULTS_DIR, "roc_curves", f"{model_key}_roc.png"), "Receiver Operating Characteristic")
 
-    c_cm1, c_cm2 = st.columns(2)
-    with c_cm1:
-        st.subheader("Confusion Matrix")
-        safe_image(os.path.join(RESULTS_DIR, "confusion_matrices", f"{model_key}_cm.png"), "Confusion Matrix Heatmap")
-    with c_cm2:
-        st.subheader("Classification Examples")
-        safe_image(os.path.join(RESULTS_DIR, "sample_predictions", f"{model_key}_samples.png"), "Correct & Incorrect Predictions")
+    with st.expander("🎯 Classification Evaluation", expanded=False):
+        c_cm1, c_cm2 = st.columns(2)
+        with c_cm1:
+            st.subheader("Confusion Matrix")
+            safe_image(os.path.join(RESULTS_DIR, "confusion_matrices", f"{model_key}_cm.png"), "Confusion Matrix Heatmap")
+        with c_cm2:
+            st.subheader("Classification Examples")
+            safe_image(os.path.join(RESULTS_DIR, "sample_predictions", f"{model_key}_samples.png"), "Correct & Incorrect Predictions")
 
-    st.markdown("---")
-    st.subheader("Grad-CAM Analysis")
-    st.markdown("Visual attention maps explaining model predictions.")
-    safe_image(os.path.join(RESULTS_DIR, "gradcam_outputs", model_key, f"{model_key}_gradcam_grid.png"), "Grad-CAM Overlays")
+    with st.expander("🔍 Grad-CAM Explainability", expanded=False):
+        st.markdown("Visual attention maps explaining model predictions.")
+        safe_image(os.path.join(RESULTS_DIR, "gradcam_outputs", model_key, f"{model_key}_gradcam_grid.png"), "Grad-CAM Overlays")
 
-    st.markdown("---")
-    st.subheader("Robustness Analysis")
-    c_rob1, c_rob2 = st.columns(2)
-    with c_rob1:
-        safe_image(os.path.join(RESULTS_DIR, "robustness", f"{model_key}_blur.png"), "Performance under Gaussian Blur")
-    with c_rob2:
-        safe_image(os.path.join(RESULTS_DIR, "robustness", f"{model_key}_noise.png"), "Performance under Gaussian Noise")
+    with st.expander("🛡️ Robustness Analysis", expanded=False):
+        c_rob1, c_rob2 = st.columns(2)
+        with c_rob1:
+            safe_image(os.path.join(RESULTS_DIR, "robustness", f"{model_key}_blur.png"), "Performance under Gaussian Blur")
+        with c_rob2:
+            safe_image(os.path.join(RESULTS_DIR, "robustness", f"{model_key}_noise.png"), "Performance under Gaussian Noise")
 
 
 # ------------------------------------------

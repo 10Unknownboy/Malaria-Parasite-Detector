@@ -69,7 +69,7 @@ st.sidebar.header("⚙️ Settings")
 selected_display = st.sidebar.selectbox(
     "Choose a model",
     list(MODEL_OPTIONS.keys()),
-    index=1,  # default: ResNet‑18
+    index=2,  # default: MobileNet V2
 )
 model_key = MODEL_OPTIONS[selected_display]
 show_gradcam = st.sidebar.checkbox("Show Grad‑CAM overlay", value=True)

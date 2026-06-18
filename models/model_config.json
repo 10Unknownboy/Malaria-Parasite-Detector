@@ -1,0 +1,17 @@
+{
+  "simple_cnn": {
+    "architecture": "SimpleCNN",
+    "total_parameters": 422401,
+    "trainable_parameters": 422401
+  },
+  "resnet18": {
+    "architecture": "ResNet18Model",
+    "total_parameters": 11308097,
+    "trainable_parameters": 11308097
+  },
+  "mobilenetv2": {
+    "architecture": "MobileNetV2Model",
+    "total_parameters": 2552065,
+    "trainable_parameters": 2552065
+  }
+}

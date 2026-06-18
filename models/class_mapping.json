@@ -1,0 +1,10 @@
+{
+  "class_mapping": {
+    "0": "Uninfected",
+    "1": "Parasitized"
+  },
+  "class_names": [
+    "Uninfected",
+    "Parasitized"
+  ]
+}

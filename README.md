@@ -283,7 +283,15 @@ The app provides:
 
 ## 📦 Results & Outputs
 
-After training and evaluation, the following files are generated:
+### 🏆 Final Training Results
+After training all three architectures on Google Colab, **MobileNet V2** emerged as the best-performing model with the following metrics on the test set:
+- **Accuracy**: 97.0%
+- **Precision**: 97.3%
+- **Recall**: 96.7%
+- **F1-Score**: 96.9%
+- **ROC-AUC**: 99.6%
+
+The following files were generated and are available in the `models/` folder:
 
 ### Model Files (`models/`)
 | File | Description |

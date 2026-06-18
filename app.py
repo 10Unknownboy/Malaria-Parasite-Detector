@@ -28,7 +28,7 @@ if os.path.exists(os.path.join(MODELS_DIR, "results")):
 if os.path.exists(os.path.join(MODELS_DIR, "reports")):
     REPORTS_DIR = os.path.join(MODELS_DIR, "reports")
 
-st.set_page_config(page_title="Malaria Parasite Detector", page_icon="🔬", layout="wide")
+st.set_page_config(page_title="Malaria Parasite Detector", page_icon="", layout="wide")
 
 # ==========================================
 # Helpers & Data Loading
@@ -90,7 +90,7 @@ def get_model_metrics(m_key):
 # ==========================================
 # Sidebar
 # ==========================================
-st.sidebar.header("⚙️ Settings")
+st.sidebar.header(" Settings")
 selected_display = st.sidebar.selectbox("Choose a model", list(MODEL_OPTIONS.keys()), index=2)
 model_key = MODEL_OPTIONS[selected_display]
 show_gradcam = st.sidebar.checkbox("Show Grad-CAM overlay", value=True)
@@ -133,10 +133,10 @@ if load_error:
 # ==========================================
 # Main Layout
 # ==========================================
-st.title("🔬 Malaria Parasite Detector Dashboard")
-st.warning("⚠️ **DISCLAIMER**: This is an educational prototype only. NOT validated for clinical use.")
+st.title(" Malaria Parasite Detector Dashboard")
+st.warning(" **DISCLAIMER**: This is an educational prototype only. NOT validated for clinical use.")
 
-tab1, tab2, tab3 = st.tabs(["🏠 Home", "📊 Model Insights", "🔬 Predictions"])
+tab1, tab2, tab3 = st.tabs([" Home", " Model Insights", " Predictions"])
 
 # ------------------------------------------
 # TAB 1: HOME
@@ -201,7 +201,7 @@ with tab1:
                 
     st.markdown("---")
     
-    with st.expander("📄 Dataset Insights"):
+    with st.expander(" Dataset Insights"):
         insight_path = os.path.join(RESULTS_DIR, "data_insights.txt")
         if os.path.exists(insight_path):
             with open(insight_path, "r", encoding="utf-8") as f:
@@ -209,7 +209,7 @@ with tab1:
         else:
             st.info(f"No data_insights.txt found at {insight_path}")
             
-    with st.expander("📄 Project Report"):
+    with st.expander(" Project Report"):
         report_path = os.path.join(REPORTS_DIR, "project_report.md")
         if os.path.exists(report_path):
             with open(report_path, "r", encoding="utf-8") as f:
@@ -227,7 +227,7 @@ with tab2:
         try:
             rank = best_report.get("ranking", []).index(model_key) + 1
             total_models = len(best_report.get("ranking", []))
-            st.markdown(f"### 🏆 Leaderboard Rank: #{rank} / #{total_models}")
+            st.markdown(f"###  Leaderboard Rank: #{rank} / #{total_models}")
         except ValueError:
             pass
         
@@ -248,7 +248,7 @@ with tab2:
         else:
             st.info(f"Image not found: {os.path.basename(path)}")
 
-    with st.expander("📈 Training & Performance Curves", expanded=False):
+    with st.expander(" Training & Performance Curves", expanded=False):
         c_perf1, c_perf2 = st.columns(2)
         with c_perf1:
             st.subheader("Training Curves")
@@ -257,7 +257,7 @@ with tab2:
             st.subheader("ROC Analysis")
             safe_image(os.path.join(RESULTS_DIR, "roc_curves", f"{model_key}_roc.png"), "Receiver Operating Characteristic")
 
-    with st.expander("🎯 Classification Evaluation", expanded=False):
+    with st.expander(" Classification Evaluation", expanded=False):
         c_cm1, c_cm2 = st.columns(2)
         with c_cm1:
             st.subheader("Confusion Matrix")
@@ -266,16 +266,22 @@ with tab2:
             st.subheader("Classification Examples")
             safe_image(os.path.join(RESULTS_DIR, "sample_predictions", f"{model_key}_samples.png"), "Correct & Incorrect Predictions")
 
-    with st.expander("🔍 Grad-CAM Explainability", expanded=False):
+    with st.expander(" Grad-CAM Explainability", expanded=False):
         st.markdown("Visual attention maps explaining model predictions.")
         safe_image(os.path.join(RESULTS_DIR, "gradcam_outputs", model_key, f"{model_key}_gradcam_grid.png"), "Grad-CAM Overlays")
 
-    with st.expander("🛡️ Robustness Analysis", expanded=False):
-        c_rob1, c_rob2 = st.columns(2)
-        with c_rob1:
-            safe_image(os.path.join(RESULTS_DIR, "robustness", f"{model_key}_blur.png"), "Performance under Gaussian Blur")
-        with c_rob2:
-            safe_image(os.path.join(RESULTS_DIR, "robustness", f"{model_key}_noise.png"), "Performance under Gaussian Noise")
+    with st.expander(" Robustness Analysis", expanded=False):
+        blur_path = os.path.join(RESULTS_DIR, "robustness", f"{model_key}_blur.png")
+        noise_path = os.path.join(RESULTS_DIR, "robustness", f"{model_key}_noise.png")
+        
+        if os.path.exists(blur_path) and os.path.exists(noise_path):
+            c_rob1, c_rob2 = st.columns(2)
+            with c_rob1:
+                safe_image(blur_path, "Performance under Gaussian Blur")
+            with c_rob2:
+                safe_image(noise_path, "Performance under Gaussian Noise")
+        else:
+            st.info("Robustness analysis was only run on the best model (MobileNetV2) during training to save time. These charts are not available for this architecture.")
 
 
 # ------------------------------------------
@@ -311,9 +317,9 @@ with tab3:
             
             with col_result:
                 if predicted_label == 1:
-                    st.error(f"🦠 **{prediction_str}**")
+                    st.error(f" **{prediction_str}**")
                 else:
-                    st.success(f"✅ **{prediction_str}**")
+                    st.success(f" **{prediction_str}**")
                     
                 st.metric("Confidence", f"{confidence:.1%}")
                 st.markdown("**Probability Chart**")
@@ -345,7 +351,7 @@ with tab3:
     # --- Mode 2: Random Dataset Prediction ---
     with st.expander("Option 2: Predict Random Dataset Images", expanded=True):
         st.markdown("Select 5 random Parasitized and 5 random Uninfected images to evaluate the current model on the fly.")
-        if st.button("🚀 Predict Random Images"):
+        if st.button(" Predict Random Images"):
             with st.spinner("Sampling and running predictions..."):
                 para_dir = os.path.join(DATA_DIR, "Parasitized")
                 uninf_dir = os.path.join(DATA_DIR, "Uninfected")

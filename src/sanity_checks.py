@@ -20,9 +20,9 @@ from src.config import CLASS_NAMES, DATA_DIR, IMAGE_SIZE, SEED
 # ────────────────────────────────────────────────────────────────────
 # Helpers
 # ────────────────────────────────────────────────────────────────────
-_PASS = "✅"
-_FAIL = "❌"
-_WARN = "⚠️"
+_PASS = ""
+_FAIL = ""
+_WARN = ""
 
 EXPECTED_TOTAL = 27_558  # NIH Malaria dataset reference count
 BALANCE_RANGE = (0.45, 0.55)  # acceptable positive‑class fraction
@@ -196,7 +196,7 @@ def run_all_checks(
 
     # ── formatted report ──────────────────────────────────────────
     print("\n" + "=" * 65)
-    print("  🔍  Sanity Check Report")
+    print("    Sanity Check Report")
     print("=" * 65)
     results: Dict[str, bool] = {}
     for chk in checks:

@@ -240,7 +240,7 @@ def test_reduced_data(
         )
 
         model = model_class()
-        print(f"\n  📉  Training with {frac:.0%} data ({n_subset:,} samples)")
+        print(f"\n    Training with {frac:.0%} data ({n_subset:,} samples)")
         history = train_model(
             model, sub_loader, val_loader,
             model_name=f"{model_name}_frac{frac}",
@@ -285,7 +285,7 @@ def run_all_robustness(
     create_dirs()
 
     print(f"\n{'=' * 55}")
-    print(f"  🛡  Robustness Tests — {model_name}")
+    print(f"    Robustness Tests — {model_name}")
     print(f"{'=' * 55}")
 
     print("\n  ─── Gaussian Blur ───")
@@ -305,7 +305,7 @@ def run_all_robustness(
     }
     with open(json_path, "w") as f:
         json.dump(serialisable, f, indent=2)
-    print(f"\n  📄  Results JSON → {json_path}")
+    print(f"\n    Results JSON → {json_path}")
 
     # ── bar charts ────────────────────────────────────────────────
     _plot_robustness_bar(blur_results, "Gaussian Blur (kernel size)", model_name, "blur")
@@ -342,4 +342,4 @@ def _plot_robustness_bar(
     path = os.path.join(ROBUSTNESS_DIR, f"{model_name}_{test_type}.png")
     fig.savefig(path, dpi=150, bbox_inches="tight")
     plt.close(fig)
-    print(f"  📊  Chart → {path}")
+    print(f"    Chart → {path}")

@@ -126,7 +126,7 @@ def train_model(
     best_model_path = os.path.join(MODELS_DIR, f"{model_name}_best.pth")
 
     print(f"\n{'=' * 65}")
-    print(f"  🏋️  Training: {model_name}")
+    print(f"    Training: {model_name}")
     print(f"  Device: {device}  |  AMP: {amp_enabled}  |  "
           f"Epochs: {num_epochs}  |  Patience: {patience}")
     print(f"{'=' * 65}")
@@ -208,18 +208,18 @@ def train_model(
 
         # ── early stopping ────────────────────────────────────────
         if epochs_without_improvement >= patience:
-            print(f"\n  ⏹  Early stopping at epoch {epoch} "
+            print(f"\n    Early stopping at epoch {epoch} "
                   f"(no improvement for {patience} epochs)")
             break
 
     elapsed = time.time() - t_start
-    print(f"\n  ⏱  Training completed in {elapsed / 60:.1f} min")
-    print(f"  💾  Best model saved → {best_model_path}")
+    print(f"\n    Training completed in {elapsed / 60:.1f} min")
+    print(f"    Best model saved → {best_model_path}")
 
     # ── save history CSV ──────────────────────────────────────────
     csv_path = os.path.join(MODELS_DIR, f"{model_name}_history.csv")
     _save_history_csv(history, csv_path)
-    print(f"  📄  History CSV → {csv_path}")
+    print(f"    History CSV → {csv_path}")
 
     # ── plot curves ───────────────────────────────────────────────
     _plot_training_curves(history, model_name)
@@ -296,4 +296,4 @@ def _plot_training_curves(history: Dict[str, List], model_name: str) -> None:
     save_path = os.path.join(TRAINING_CURVES_DIR, f"{model_name}_curves.png")
     fig.savefig(save_path, dpi=150, bbox_inches="tight")
     plt.close(fig)
-    print(f"  📈  Curves → {save_path}")
+    print(f"    Curves → {save_path}")

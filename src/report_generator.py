@@ -122,7 +122,7 @@ def generate_report(
     lines.append("")
     lines.append(f"*Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}*")
     lines.append("")
-    lines.append("> **⚠️  DISCLAIMER**: This project is an **educational prototype**.")
+    lines.append("> **  DISCLAIMER**: This project is an **educational prototype**.")
     lines.append("> It is **NOT** validated for clinical or diagnostic use.  Always")
     lines.append("> consult qualified medical professionals for malaria diagnosis.")
     lines.append("")
@@ -311,5 +311,5 @@ def generate_report(
     with open(report_path, "w", encoding="utf-8") as f:
         f.write(report_md)
 
-    print(f"\n  📝  Report generated → {report_path}")
+    print(f"\n    Report generated → {report_path}")
     return report_path

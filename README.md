@@ -1,12 +1,12 @@
-# 🦟 Malaria Parasite Detector from Blood Smear Images
+#  Malaria Parasite Detector from Blood Smear Images
 
-> **⚠️ DISCLAIMER: This is an educational prototype only — NOT intended for clinical use or medical diagnosis.**
+> ** DISCLAIMER: This is an educational prototype only — NOT intended for clinical use or medical diagnosis.**
 
 A deep learning pipeline for binary classification of thin blood smear cell images as **Parasitized** or **Uninfected** using PyTorch. The project trains three CNN architectures, evaluates them comprehensively, and provides local inference tools.
 
 ---
 
-## 📋 Table of Contents
+##  Table of Contents
 
 - [Project Overview](#project-overview)
 - [Dataset](#dataset)
@@ -24,7 +24,7 @@ A deep learning pipeline for binary classification of thin blood smear cell imag
 
 ---
 
-## 🔬 Project Overview
+##  Project Overview
 
 Malaria is a life-threatening disease caused by Plasmodium parasites transmitted through mosquito bites. Microscopic examination of blood smears is the gold standard for diagnosis but requires skilled technicians. This project demonstrates how AI can assist in automated screening.
 
@@ -45,7 +45,7 @@ Malaria is a life-threatening disease caused by Plasmodium parasites transmitted
 
 ---
 
-## 📊 Dataset
+##  Dataset
 
 **Malaria Cell Images Dataset** — Source: NIH/LHNCBC (National Library of Medicine)
 
@@ -61,7 +61,7 @@ The dataset is publicly available on [Kaggle](https://www.kaggle.com/datasets/ia
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 Malaria Parasite Detector/
@@ -86,7 +86,7 @@ Malaria Parasite Detector/
 │   ├── sanity_checks.py              # Automated verification
 │   └── report_generator.py           # Auto-generate project report
 ├── notebooks/
-│   └── malaria_training.ipynb         # ⭐ Google Colab training notebook
+│   └── malaria_training.ipynb         #  Google Colab training notebook
 ├── models/                            # Exported model weights & metadata
 │   ├── simple_cnn_best.pth
 │   ├── resnet18_best.pth
@@ -109,7 +109,7 @@ Malaria Parasite Detector/
 
 ---
 
-## 🛠️ Setup
+##  Setup
 
 ### Local Setup (Windows)
 
@@ -176,7 +176,7 @@ You can train the models on Google Colab using the provided notebook which handl
 
 ---
 
-## 🔄 Workflow
+##  Workflow
 
 ```
 ┌─────────────────────────────────────────────────┐
@@ -205,7 +205,7 @@ You can train the models on Google Colab using the provided notebook which handl
 
 ---
 
-## 🧠 Model Architectures
+##  Model Architectures
 
 ### 1. Simple CNN (from scratch)
 - 4 convolutional blocks: Conv2d → BatchNorm → ReLU → MaxPool
@@ -227,7 +227,7 @@ You can train the models on Google Colab using the provided notebook which handl
 
 ---
 
-## 📈 Evaluation Metrics
+##  Evaluation Metrics
 
 | Metric | Description |
 |--------|-------------|
@@ -243,7 +243,7 @@ You can train the models on Google Colab using the provided notebook which handl
 
 ---
 
-## 🖥️ Local Inference
+##  Local Inference
 
 ### CLI Script
 
@@ -281,9 +281,9 @@ The app provides:
 
 ---
 
-## 📦 Results & Outputs
+##  Results & Outputs
 
-### 🏆 Final Training Results
+###  Final Training Results
 After training all three architectures on Google Colab, **MobileNet V2** emerged as the best-performing model with the following metrics on the test set:
 - **Accuracy**: 97.0%
 - **Precision**: 97.3%
@@ -322,7 +322,7 @@ The following files were generated and are available in the `models/` folder:
 
 ---
 
-## ⚙️ Technical Details
+##  Technical Details
 
 | Parameter | Value |
 |-----------|-------|
@@ -347,7 +347,7 @@ The following files were generated and are available in the `models/` folder:
 
 ---
 
-## 📄 License
+##  License
 
 This project is for educational purposes only. The Malaria Cell Images dataset is provided by the NIH National Library of Medicine.
 

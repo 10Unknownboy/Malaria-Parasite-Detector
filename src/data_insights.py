@@ -85,4 +85,4 @@ def generate_data_insights(data_dir=DATA_DIR, output_file=None):
     with open(output_file, "w", encoding="utf-8") as f:
         f.write("\n".join(insights))
         
-    print(f"  ✅ Data insights saved to: {output_file}")
+    print(f"   Data insights saved to: {output_file}")

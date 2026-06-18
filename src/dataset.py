@@ -296,7 +296,7 @@ def print_class_balance(data_dir: str = DATA_DIR) -> Dict[str, int]:
     n_uninfected = total - n_parasitized
 
     print("\n" + "=" * 55)
-    print("  📊  Dataset Class Balance")
+    print("    Dataset Class Balance")
     print("=" * 55)
     print(f"  Total images       : {total:,}")
     print(f"  Parasitized  (1)   : {n_parasitized:,}  "
@@ -315,7 +315,7 @@ def print_split_summary(
 ) -> None:
     """Print a formatted per‑split summary."""
     print("\n" + "=" * 55)
-    print("  📂  Data Split Summary")
+    print("    Data Split Summary")
     print("=" * 55)
     for name, lbls in [("Train", train_labels),
                         ("Val", val_labels),

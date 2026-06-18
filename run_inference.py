@@ -52,7 +52,7 @@ def main():
             "  python run_inference.py --image data/Parasitized/C100P61ThinF_IMG_20150918_144104_cell_162.png\n"
             "  python run_inference.py --image cell.png --model mobilenetv2 --gradcam\n"
             "\n"
-            "⚠️  DISCLAIMER: Educational prototype — NOT for clinical use."
+            "  DISCLAIMER: Educational prototype — NOT for clinical use."
         ),
     )
     parser.add_argument(
@@ -73,31 +73,31 @@ def main():
 
     # ── validate input ────────────────────────────────────────────
     if not os.path.isfile(args.image):
-        print(f"❌  Image file not found: {args.image}")
+        print(f"  Image file not found: {args.image}")
         sys.exit(1)
 
     # ── load metadata (informational) ─────────────────────────────
     model_config, class_mapping = _load_metadata()
     if model_config and args.model in model_config:
         info = model_config[args.model]
-        print(f"\n  🧠  Model: {args.model} "
+        print(f"\n    Model: {args.model} "
               f"({info.get('architecture', '?')}, "
               f"{info.get('trainable_parameters', '?'):,} params)")
     else:
-        print(f"\n  🧠  Model: {args.model}")
+        print(f"\n    Model: {args.model}")
 
     if class_mapping:
-        print(f"  🏷  Classes: {class_mapping.get('class_names', ['Uninfected', 'Parasitized'])}")
+        print(f"    Classes: {class_mapping.get('class_names', ['Uninfected', 'Parasitized'])}")
 
     # ── load model ────────────────────────────────────────────────
     create_dirs()
     try:
         model = load_model(args.model, device=DEVICE)
     except FileNotFoundError as exc:
-        print(f"\n❌  {exc}")
+        print(f"\n  {exc}")
         sys.exit(1)
 
-    print(f"  📱  Device: {DEVICE}")
+    print(f"    Device: {DEVICE}")
 
     # ── run prediction ────────────────────────────────────────────
     if args.gradcam:
@@ -109,7 +109,7 @@ def main():
 
     # ── display result ────────────────────────────────────────────
     print(f"\n{'=' * 50}")
-    print(f"  🔬  Prediction Result")
+    print(f"    Prediction Result")
     print(f"{'=' * 50}")
     print(f"  Image       : {os.path.basename(args.image)}")
     print(f"  Prediction  : {result['prediction']}")
@@ -121,7 +121,7 @@ def main():
         print(f"  Grad‑CAM    : {result['gradcam_path']}")
 
     print(f"{'=' * 50}")
-    print("\n  ⚠️  DISCLAIMER: Educational prototype — NOT for clinical use.\n")
+    print("\n    DISCLAIMER: Educational prototype — NOT for clinical use.\n")
 
 
 if __name__ == "__main__":

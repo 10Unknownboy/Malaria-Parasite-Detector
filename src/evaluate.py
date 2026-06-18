@@ -114,7 +114,7 @@ def evaluate_model(
 
     # ── print summary ─────────────────────────────────────────────
     print(f"\n{'=' * 55}")
-    print(f"  📊  Evaluation Results — {model_name}")
+    print(f"    Evaluation Results — {model_name}")
     print(f"{'=' * 55}")
     for k, v in metrics.items():
         print(f"  {k:>12s} : {v:.4f}")
@@ -151,7 +151,7 @@ def _plot_confusion_matrix(
     path = os.path.join(CONFUSION_MATRIX_DIR, f"{model_name}_cm.png")
     fig.savefig(path, dpi=150, bbox_inches="tight")
     plt.close(fig)
-    print(f"  📊  Confusion matrix → {path}")
+    print(f"    Confusion matrix → {path}")
 
 
 # ────────────────────────────────────────────────────────────────────
@@ -176,7 +176,7 @@ def _plot_roc_curve(
     path = os.path.join(ROC_CURVES_DIR, f"{model_name}_roc.png")
     fig.savefig(path, dpi=150, bbox_inches="tight")
     plt.close(fig)
-    print(f"  📈  ROC curve → {path}")
+    print(f"    ROC curve → {path}")
 
 
 # ────────────────────────────────────────────────────────────────────
@@ -250,7 +250,7 @@ def _plot_sample_predictions(
     path = os.path.join(SAMPLE_PREDICTIONS_DIR, f"{model_name}_samples.png")
     fig.savefig(path, dpi=150, bbox_inches="tight")
     plt.close(fig)
-    print(f"  🖼  Sample predictions → {path}")
+    print(f"    Sample predictions → {path}")
 
 
 # ────────────────────────────────────────────────────────────────────
@@ -282,11 +282,11 @@ def compare_models(
     df.to_csv(csv_path)
 
     print(f"\n{'=' * 70}")
-    print("  🏆  Model Comparison")
+    print("    Model Comparison")
     print(f"{'=' * 70}")
     print(df.to_string(float_format="{:.4f}".format))
     print(f"{'=' * 70}\n")
-    print(f"  📄  Comparison CSV → {csv_path}")
+    print(f"    Comparison CSV → {csv_path}")
 
     # ── determine best model (F1, then recall as tiebreaker) ─────
     best_name = df.index[0]
@@ -304,8 +304,8 @@ def compare_models(
     report_path = os.path.join(MODELS_DIR, "best_model_report.json")
     with open(report_path, "w") as f:
         json.dump(best_report, f, indent=2)
-    print(f"  🏆  Best model: {best_name}")
-    print(f"  📄  Report → {report_path}\n")
+    print(f"    Best model: {best_name}")
+    print(f"    Report → {report_path}\n")
 
     return best_report
 
@@ -370,7 +370,7 @@ def save_all_metadata(
     csv_path = os.path.join(RESULTS_DIR, "final_results_summary.csv")
     df.to_csv(csv_path)
 
-    print("  💾  All metadata saved.")
+    print("    All metadata saved.")
 
 
 def _write_json(path: str, data: Any) -> None:

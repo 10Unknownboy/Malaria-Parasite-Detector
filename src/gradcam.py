@@ -349,5 +349,5 @@ def generate_gradcam_grid(
 
     cam.remove_hooks()
 
-    print(f"  🔍  Grad‑CAM outputs → {save_dir}/ ({len(saved_paths)} files)")
+    print(f"    Grad‑CAM outputs → {save_dir}/ ({len(saved_paths)} files)")
     return saved_paths

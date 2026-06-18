@@ -42,15 +42,15 @@ from src.data_insights import generate_data_insights
 
 def main():
     print(f"{'='*50}")
-    print("🚀 Starting Local Training Pipeline")
+    print(" Starting Local Training Pipeline")
     print(f"{'='*50}")
     
     # 1. Setup & Checks
     set_seed()
     create_dirs()
-    print(f"\n📱 Device: {DEVICE}")
+    print(f"\n Device: {DEVICE}")
     if DEVICE.type == 'cpu':
-        print("⚠️  WARNING: Running on CPU. Training will be very slow!")
+        print("  WARNING: Running on CPU. Training will be very slow!")
         print("If you have an NVIDIA GPU, ensure CUDA is installed.")
         
     print("\n--- 1. Sanity Checks ---")
@@ -66,7 +66,7 @@ def main():
     print("\n--- 3. Initialize Models ---")
     models = get_all_models()
     for name in models.keys():
-        print(f"✅ Loaded architecture: {name}")
+        print(f" Loaded architecture: {name}")
     
     # 4. Train Models
     print("\n--- 4. Train Models ---")
@@ -112,7 +112,7 @@ def main():
     generate_report(RESULTS_DIR, MODELS_DIR, REPORTS_DIR)
     
     print(f"\n{'='*50}")
-    print("🎉 Local Training Pipeline Complete!")
+    print(" Local Training Pipeline Complete!")
     print(f"All models saved to: {MODELS_DIR}")
     print(f"All reports saved to: {REPORTS_DIR}")
     print(f"{'='*50}")

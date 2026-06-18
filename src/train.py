@@ -18,11 +18,12 @@ WARNING: This is an educational prototype only — NOT for clinical use.
 import csv
 import os
 import time
-from typing import Any, Dict, List, Optional
+import time
 
 import matplotlib
 matplotlib.use("Agg")  # non‑interactive backend — safe for scripts / Colab
 import matplotlib.pyplot as plt
+plt.style.use('dark_background')
 import numpy as np
 import torch
 import torch.nn as nn
@@ -49,19 +50,19 @@ from src.config import (
 # Training loop
 # ────────────────────────────────────────────────────────────────────
 def train_model(
-    model: nn.Module,
-    train_loader: DataLoader,
-    val_loader: DataLoader,
-    model_name: str,
-    device: torch.device = DEVICE,
-    num_epochs: int = NUM_EPOCHS,
-    learning_rate: float = LEARNING_RATE,
-    weight_decay: float = WEIGHT_DECAY,
-    patience: int = EARLY_STOPPING_PATIENCE,
-    lr_patience: int = LR_SCHEDULER_PATIENCE,
-    lr_factor: float = LR_SCHEDULER_FACTOR,
-    use_amp: bool = USE_AMP,
-) -> Dict[str, List[Any]]:
+    model,
+    train_loader,
+    val_loader,
+    model_name,
+    device=DEVICE,
+    num_epochs=NUM_EPOCHS,
+    learning_rate=LEARNING_RATE,
+    weight_decay=WEIGHT_DECAY,
+    patience=EARLY_STOPPING_PATIENCE,
+    lr_patience=LR_SCHEDULER_PATIENCE,
+    lr_factor=LR_SCHEDULER_FACTOR,
+    use_amp=USE_AMP,
+):
     """Train a binary classifier end‑to‑end.
 
     Parameters
@@ -112,7 +113,7 @@ def train_model(
     scaler = GradScaler(enabled=amp_enabled)
 
     # ── history tracking ──────────────────────────────────────────
-    history: Dict[str, List[Any]] = {
+    history = {
         "epoch": [],
         "train_loss": [],
         "val_loss": [],
@@ -232,12 +233,12 @@ def train_model(
 # ────────────────────────────────────────────────────────────────────
 @torch.no_grad()
 def _evaluate_epoch(
-    model: nn.Module,
-    loader: DataLoader,
-    criterion: nn.Module,
-    device: torch.device,
-    amp_enabled: bool,
-) -> tuple:
+    model,
+    loader,
+    criterion,
+    device,
+    amp_enabled,
+):
     """Compute loss and accuracy on an entire DataLoader."""
     model.eval()
     running_loss = 0.0
@@ -260,7 +261,7 @@ def _evaluate_epoch(
     return running_loss / total, correct / total
 
 
-def _save_history_csv(history: Dict[str, List], path: str) -> None:
+def _save_history_csv(history, path):
     """Write training history to a CSV file."""
     with open(path, "w", newline="") as f:
         writer = csv.writer(f)
@@ -268,7 +269,7 @@ def _save_history_csv(history: Dict[str, List], path: str) -> None:
         writer.writerows(zip(*history.values()))
 
 
-def _plot_training_curves(history: Dict[str, List], model_name: str) -> None:
+def _plot_training_curves(history, model_name):
     """Save loss and accuracy curves as PNG files."""
     epochs = history["epoch"]
 
@@ -297,3 +298,9 @@ def _plot_training_curves(history: Dict[str, List], model_name: str) -> None:
     fig.savefig(save_path, dpi=150, bbox_inches="tight")
     plt.close(fig)
     print(f"    Curves → {save_path}")
+
+
+
+
+
+

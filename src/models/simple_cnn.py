@@ -26,7 +26,7 @@ class SimpleCNN(nn.Module):
         ``BCEWithLogitsLoss``.
     """
 
-    def __init__(self, num_classes: int = 1):
+    def __init__(self, num_classes=1):
         super().__init__()
 
         # ── convolutional backbone ────────────────────────────────
@@ -68,7 +68,7 @@ class SimpleCNN(nn.Module):
         )
 
     # ── forward pass ──────────────────────────────────────────────
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
+    def forward(self, x):
         """
         Parameters
         ----------
@@ -85,7 +85,7 @@ class SimpleCNN(nn.Module):
         return x
 
     # ── Grad‑CAM helpers ──────────────────────────────────────────
-    def get_last_conv_layer(self) -> nn.Module:
+    def get_last_conv_layer(self):
         """Return the last convolutional layer for Grad‑CAM.
 
         This is the ``Conv2d`` in Block 4 (``self.features[12]``).
@@ -94,6 +94,6 @@ class SimpleCNN(nn.Module):
         return self.features[12]
 
     @staticmethod
-    def get_last_conv_layer_name() -> str:
+    def get_last_conv_layer_name():
         """Return the dotted attribute path to the target layer."""
         return "features.12"

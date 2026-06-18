@@ -13,8 +13,6 @@ Use :func:`get_model` to instantiate a model by name, or
 WARNING: This is an educational prototype only — NOT for clinical use.
 """
 
-from typing import Dict
-
 import torch.nn as nn
 
 from src.config import MODEL_MOBILENETV2, MODEL_RESNET18, MODEL_SIMPLE_CNN
@@ -26,14 +24,14 @@ from src.models.mobilenet import MobileNetV2Model
 # ────────────────────────────────────────────────────────────────────
 # Registry
 # ────────────────────────────────────────────────────────────────────
-_MODEL_REGISTRY: Dict[str, type] = {
+_MODEL_REGISTRY = {
     MODEL_SIMPLE_CNN: SimpleCNN,
     MODEL_RESNET18: ResNet18Model,
     MODEL_MOBILENETV2: MobileNetV2Model,
 }
 
 
-def get_model(name: str, **kwargs) -> nn.Module:
+def get_model(name, **kwargs):
     """Instantiate and return a model by its registry key.
 
     Parameters
@@ -62,7 +60,7 @@ def get_model(name: str, **kwargs) -> nn.Module:
     return _MODEL_REGISTRY[name](**kwargs)
 
 
-def get_model_class(name: str) -> type:
+def get_model_class(name):
     """Return the model **class** (not an instance) by its registry key.
 
     Useful when you need to instantiate the model later (e.g. for
@@ -77,7 +75,7 @@ def get_model_class(name: str) -> type:
     return _MODEL_REGISTRY[name]
 
 
-def get_all_models(**kwargs) -> Dict[str, nn.Module]:
+def get_all_models(**kwargs):
     """Return a dictionary mapping every registry key to a fresh model instance.
 
     Parameters
@@ -92,7 +90,7 @@ def get_all_models(**kwargs) -> Dict[str, nn.Module]:
     return {name: cls(**kwargs) for name, cls in _MODEL_REGISTRY.items()}
 
 
-def count_parameters(model: nn.Module) -> int:
+def count_parameters(model):
     """Count the total number of **trainable** parameters."""
     return sum(p.numel() for p in model.parameters() if p.requires_grad)
 
@@ -106,3 +104,5 @@ __all__ = [
     "ResNet18Model",
     "MobileNetV2Model",
 ]
+
+

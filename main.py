@@ -41,6 +41,11 @@ from src.report_generator import generate_report
 from src.data_insights import generate_data_insights
 
 def main():
+    """
+    Main execution function that runs the complete local training pipeline.
+    This orchestrates sanity checks, dataset loading, model training, 
+    evaluation, robustness testing, explainability generation, and report building.
+    """
     print(f"{'='*50}")
     print(" Starting Local Training Pipeline")
     print(f"{'='*50}")
@@ -119,3 +124,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

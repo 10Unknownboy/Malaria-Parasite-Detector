@@ -14,11 +14,12 @@ WARNING: This is an educational prototype only — NOT for clinical use.
 
 import json
 import os
-from typing import Any, Dict, List, Optional, Tuple
+import os
 
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+plt.style.use('dark_background')
 import numpy as np
 import torch
 import torch.nn as nn
@@ -44,9 +45,9 @@ from src.config import (
 # Perturbation primitives
 # ────────────────────────────────────────────────────────────────────
 def apply_gaussian_blur(
-    image_tensor: torch.Tensor,
-    kernel_size: int = 5,
-) -> torch.Tensor:
+    image_tensor,
+    kernel_size=5,
+):
     """Apply Gaussian blur to an image tensor.
 
     Parameters
@@ -87,9 +88,9 @@ def apply_gaussian_blur(
 
 
 def apply_gaussian_noise(
-    image_tensor: torch.Tensor,
-    sigma: float = 0.05,
-) -> torch.Tensor:
+    image_tensor,
+    sigma=0.05,
+):
     """Add zero‑mean Gaussian noise to an image tensor.
 
     Parameters
@@ -111,11 +112,11 @@ def apply_gaussian_noise(
 # ────────────────────────────────────────────────────────────────────
 @torch.no_grad()
 def _evaluate_perturbed(
-    model: nn.Module,
-    loader: DataLoader,
-    device: torch.device,
+    model,
+    loader,
+    device,
     perturbation_fn,
-) -> Dict[str, float]:
+):
     """Run inference with a perturbation applied to each batch."""
     model.eval()
     correct = 0
@@ -135,11 +136,11 @@ def _evaluate_perturbed(
 
 
 def test_robustness_blur(
-    model: nn.Module,
-    test_loader: DataLoader,
-    device: torch.device = DEVICE,
-    kernel_sizes: Optional[List[int]] = None,
-) -> Dict[int, Dict[str, float]]:
+    model,
+    test_loader,
+    device=DEVICE,
+    kernel_sizes=None,
+):
     """Test model accuracy under increasing Gaussian blur.
 
     Returns
@@ -150,7 +151,7 @@ def test_robustness_blur(
     if kernel_sizes is None:
         kernel_sizes = [3, 5, 7, 9]
 
-    results: Dict[int, Dict[str, float]] = {}
+    results = {}
     for ks in kernel_sizes:
         fn = lambda imgs, _ks=ks: apply_gaussian_blur(imgs, kernel_size=_ks)
         metrics = _evaluate_perturbed(model, test_loader, device, fn)
@@ -160,11 +161,11 @@ def test_robustness_blur(
 
 
 def test_robustness_noise(
-    model: nn.Module,
-    test_loader: DataLoader,
-    device: torch.device = DEVICE,
-    sigmas: Optional[List[float]] = None,
-) -> Dict[float, Dict[str, float]]:
+    model,
+    test_loader,
+    device=DEVICE,
+    sigmas=None,
+):
     """Test model accuracy under increasing Gaussian noise.
 
     Returns
@@ -175,7 +176,7 @@ def test_robustness_noise(
     if sigmas is None:
         sigmas = [0.01, 0.05, 0.1, 0.2]
 
-    results: Dict[float, Dict[str, float]] = {}
+    results = {}
     for sigma in sigmas:
         fn = lambda imgs, _s=sigma: apply_gaussian_noise(imgs, sigma=_s)
         metrics = _evaluate_perturbed(model, test_loader, device, fn)
@@ -188,18 +189,18 @@ def test_robustness_noise(
 # Reduced‑data experiment
 # ────────────────────────────────────────────────────────────────────
 def test_reduced_data(
-    model_class: type,
-    model_name: str,
+    model_class,
+    model_name,
     full_train_dataset,
-    val_loader: DataLoader,
-    test_loader: DataLoader,
-    fractions: Optional[List[float]] = None,
-    device: torch.device = DEVICE,
-    num_epochs: int = 10,
-    learning_rate: float = LEARNING_RATE,
-    weight_decay: float = WEIGHT_DECAY,
-    batch_size: int = BATCH_SIZE,
-) -> Dict[float, Dict[str, float]]:
+    val_loader,
+    test_loader,
+    fractions=None,
+    device=DEVICE,
+    num_epochs=10,
+    learning_rate=LEARNING_RATE,
+    weight_decay=WEIGHT_DECAY,
+    batch_size=BATCH_SIZE,
+):
     """Retrain the model on progressively smaller subsets.
 
     Parameters
@@ -226,7 +227,7 @@ def test_reduced_data(
     if fractions is None:
         fractions = [1.0, 0.5, 0.25, 0.1]
 
-    results: Dict[float, Dict[str, float]] = {}
+    results = {}
     n_total = len(full_train_dataset)
 
     for frac in fractions:
@@ -270,11 +271,11 @@ def test_reduced_data(
 # All‑in‑one robustness suite
 # ────────────────────────────────────────────────────────────────────
 def run_all_robustness(
-    model: nn.Module,
-    model_name: str,
-    test_loader: DataLoader,
-    device: torch.device = DEVICE,
-) -> Dict[str, Any]:
+    model,
+    model_name,
+    test_loader,
+    device=DEVICE,
+):
     """Run blur and noise robustness tests and save results + plots.
 
     Returns
@@ -315,11 +316,11 @@ def run_all_robustness(
 
 
 def _plot_robustness_bar(
-    results: Dict,
-    xlabel: str,
-    model_name: str,
-    test_type: str,
-) -> None:
+    results,
+    xlabel,
+    model_name,
+    test_type,
+):
     """Save a bar chart for a robustness experiment."""
     labels = [str(k) for k in results.keys()]
     accs = [v["accuracy"] for v in results.values()]
@@ -343,3 +344,7 @@ def _plot_robustness_bar(
     fig.savefig(path, dpi=150, bbox_inches="tight")
     plt.close(fig)
     print(f"    Chart → {path}")
+
+
+
+

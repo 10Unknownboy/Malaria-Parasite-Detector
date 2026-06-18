@@ -1,3 +1,4 @@
+
 """
 Predict — Single‑image and batch inference with optional Grad‑CAM overlay.
 
@@ -8,7 +9,7 @@ WARNING: This is an educational prototype only — NOT for clinical use.
 """
 
 import os
-from typing import Dict, List, Optional, Tuple
+import os
 
 import numpy as np
 import torch
@@ -33,11 +34,11 @@ from src.models import get_model
 # Model loading
 # ────────────────────────────────────────────────────────────────────
 def load_model(
-    model_name: str,
-    model_path: Optional[str] = None,
-    device: torch.device = DEVICE,
+    model_name,
+    model_path=None,
+    device=DEVICE,
     **model_kwargs,
-) -> nn.Module:
+):
     """Load a trained model from a ``.pth`` checkpoint.
 
     Parameters
@@ -93,11 +94,11 @@ def load_model(
 # Single‑image prediction
 # ────────────────────────────────────────────────────────────────────
 def predict_single_image(
-    image_path: str,
-    model: nn.Module,
-    device: torch.device = DEVICE,
-    transform: Optional[transforms.Compose] = None,
-) -> Dict[str, object]:
+    image_path,
+    model,
+    device=DEVICE,
+    transform=None,
+):
     """Run inference on a single image.
 
     Parameters
@@ -146,13 +147,13 @@ def predict_single_image(
 # Prediction + Grad‑CAM
 # ────────────────────────────────────────────────────────────────────
 def predict_with_gradcam(
-    image_path: str,
-    model: nn.Module,
-    model_name: str,
-    device: torch.device = DEVICE,
-    transform: Optional[transforms.Compose] = None,
-    save_dir: Optional[str] = None,
-) -> Dict[str, object]:
+    image_path,
+    model,
+    model_name,
+    device=DEVICE,
+    transform=None,
+    save_dir=None,
+):
     """Predict and generate a Grad‑CAM overlay.
 
     Parameters
@@ -200,6 +201,7 @@ def predict_with_gradcam(
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
+    plt.style.use('dark_background')
 
     fig, axes = plt.subplots(1, 3, figsize=(12, 4))
     axes[0].imshow(original)
@@ -233,11 +235,11 @@ def predict_with_gradcam(
 # Batch prediction
 # ────────────────────────────────────────────────────────────────────
 def batch_predict(
-    image_paths: List[str],
-    model: nn.Module,
-    device: torch.device = DEVICE,
-    transform: Optional[transforms.Compose] = None,
-) -> List[Dict[str, object]]:
+    image_paths,
+    model,
+    device=DEVICE,
+    transform=None,
+):
     """Run inference on multiple images.
 
     Parameters
@@ -253,7 +255,7 @@ def batch_predict(
         One result dict per image (same schema as
         :func:`predict_single_image`).
     """
-    results: List[Dict[str, object]] = []
+    results = []
     for path in image_paths:
         try:
             res = predict_single_image(path, model, device, transform)
@@ -268,3 +270,4 @@ def batch_predict(
             }
         results.append(res)
     return results
+

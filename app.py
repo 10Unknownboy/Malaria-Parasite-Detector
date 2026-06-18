@@ -41,23 +41,31 @@ MODEL_OPTIONS = {
 
 @st.cache_data
 def load_metadata():
+    """
+    Load model comparison metrics and configuration files from the models directory.
+    This function is cached by Streamlit to prevent reloading on every interaction.
+    """
     comp_df = pd.DataFrame()
     csv_path = os.path.join(MODELS_DIR, "model_comparison.csv")
+    
+    # Load and map the CSV data if it exists
     if os.path.exists(csv_path):
         comp_df = pd.read_csv(csv_path)
         comp_df.rename(columns={
             "model": "ModelKey", "accuracy": "Accuracy", "precision": "Precision",
             "recall": "Recall", "f1": "F1", "roc_auc": "ROC-AUC", "specificity": "Specificity"
         }, inplace=True)
-        # Create a display name column
+        # Create a display name column mapping raw model names to friendly names
         rev_map = {v: k for k, v in MODEL_OPTIONS.items()}
         comp_df["Model"] = comp_df["ModelKey"].map(lambda x: rev_map.get(x, x))
     
+    # Load model configuration JSON
     config = {}
     if os.path.exists(os.path.join(MODELS_DIR, "model_config.json")):
         with open(os.path.join(MODELS_DIR, "model_config.json")) as f:
             config = json.load(f)
             
+    # Load the best model report JSON
     best_report = {}
     if os.path.exists(os.path.join(MODELS_DIR, "best_model_report.json")):
         with open(os.path.join(MODELS_DIR, "best_model_report.json")) as f:
@@ -69,17 +77,26 @@ comp_df, model_config, best_report = load_metadata()
 
 @st.cache_data
 def get_dataset_stats():
+    """
+    Calculate the total number of images, class counts, and dataset balance.
+    This dynamically counts files in the Parasitized and Uninfected directories.
+    """
     para_dir = os.path.join(DATA_DIR, "Parasitized")
     uninf_dir = os.path.join(DATA_DIR, "Uninfected")
     
+    # Count valid image files in the dataset directories
     p_count = len([f for f in os.listdir(para_dir) if f.lower().endswith(('.png','.jpg','.jpeg'))]) if os.path.exists(para_dir) else 0
     u_count = len([f for f in os.listdir(uninf_dir) if f.lower().endswith(('.png','.jpg','.jpeg'))]) if os.path.exists(uninf_dir) else 0
     
+    # Calculate the total images and percentage of parasitized images
     total = p_count + u_count
     balance = (p_count / total * 100) if total > 0 else 0
     return total, p_count, u_count, balance
 
 def get_model_metrics(m_key):
+    """
+    Retrieve evaluation metrics for a specific model key from the comparison dataframe.
+    """
     if comp_df.empty:
         return {}
     row = comp_df[comp_df["ModelKey"] == m_key]
@@ -117,7 +134,11 @@ if model_key in model_config:
                         f"**Device**: `{DEVICE}`")
 
 @st.cache_resource(show_spinner="Loading model…")
-def _load_model(model_name: str):
+def _load_model(model_name):
+    """
+    Load the selected PyTorch model into memory. 
+    Cached as a resource so we don't repeatedly load the model.
+    """
     from src.predict import load_model
     try:
         model = load_model(model_name, device=DEVICE)
@@ -291,12 +312,20 @@ with tab3:
     st.header("Predict Blood Smear Images")
     
     def run_prediction(image_pil):
+        """
+        Takes a PIL image, applies validation transforms, 
+        runs inference using the currently selected model, 
+        and returns the prediction.
+        """
         transform = get_transforms(is_training=False)
         input_tensor = transform(image_pil).unsqueeze(0).to(DEVICE)
+        
+        # Run model inference without gradient tracking
         with torch.no_grad():
             logit = model(input_tensor)
             prob = torch.sigmoid(logit).item()
         
+        # Convert probability to binary label (0=Uninfected, 1=Parasitized)
         predicted_label = 1 if prob >= 0.5 else 0
         prediction_str = CLASS_NAMES[predicted_label]
         return predicted_label, prediction_str, prob

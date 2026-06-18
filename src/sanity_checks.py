@@ -28,10 +28,10 @@ EXPECTED_TOTAL = 27_558  # NIH Malaria dataset reference count
 BALANCE_RANGE = (0.45, 0.55)  # acceptable positive‑class fraction
 
 
-def _collect_image_files(data_dir: str) -> Dict[str, List[str]]:
+def _collect_image_files(data_dir):
     """Walk class folders and return ``{class_name: [paths]}``."""
     valid_exts = {".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff"}
-    result: Dict[str, List[str]] = {}
+    result = {}
     for class_name in ["Parasitized", "Uninfected"]:
         class_dir = os.path.join(data_dir, class_name)
         if not os.path.isdir(class_dir):
@@ -50,8 +50,8 @@ def _collect_image_files(data_dir: str) -> Dict[str, List[str]]:
 # Individual checks
 # ────────────────────────────────────────────────────────────────────
 def _check_dataset_size(
-    files_by_class: Dict[str, List[str]],
-) -> Dict[str, Any]:
+    files_by_class,
+):
     """Check 1: Total image count is within 5 % of expected."""
     total = sum(len(v) for v in files_by_class.values())
     lower = EXPECTED_TOTAL * 0.95
@@ -66,8 +66,8 @@ def _check_dataset_size(
 
 
 def _check_class_balance(
-    files_by_class: Dict[str, List[str]],
-) -> Dict[str, Any]:
+    files_by_class,
+):
     """Check 2: Positive‑class fraction is between 45 % and 55 %."""
     n_para = len(files_by_class.get("Parasitized", []))
     n_uninf = len(files_by_class.get("Uninfected", []))
@@ -89,9 +89,9 @@ def _check_class_balance(
 
 
 def _check_image_loading(
-    files_by_class: Dict[str, List[str]],
-    n_samples: int = 50,
-) -> Dict[str, Any]:
+    files_by_class,
+    n_samples=50,
+):
     """Check 3: Randomly sample *n_samples* images and verify they open."""
     all_files = [f for fs in files_by_class.values() for f in fs]
     if len(all_files) == 0:
@@ -104,7 +104,7 @@ def _check_image_loading(
     rng = random.Random(SEED)
     sample = rng.sample(all_files, min(n_samples, len(all_files)))
 
-    failed: List[str] = []
+    failed = []
     for path in sample:
         try:
             img = Image.open(path)
@@ -124,8 +124,8 @@ def _check_image_loading(
 
 
 def _check_model_outputs(
-    models_dict: Optional[Dict[str, torch.nn.Module]],
-) -> Dict[str, Any]:
+    models_dict,
+):
     """Check 4: Feed a dummy batch through each model and verify output shape."""
     if models_dict is None or len(models_dict) == 0:
         return {
@@ -135,7 +135,7 @@ def _check_model_outputs(
         }
 
     dummy = torch.randn(2, 3, IMAGE_SIZE, IMAGE_SIZE)
-    issues: List[str] = []
+    issues = []
 
     for name, model in models_dict.items():
         try:
@@ -167,9 +167,9 @@ def _check_model_outputs(
 # Main entry point
 # ────────────────────────────────────────────────────────────────────
 def run_all_checks(
-    data_dir: str = DATA_DIR,
-    models_dict: Optional[Dict[str, torch.nn.Module]] = None,
-) -> Dict[str, bool]:
+    data_dir=DATA_DIR,
+    models_dict=None,
+):
     """Execute all sanity checks and print a formatted report.
 
     Parameters
@@ -198,7 +198,7 @@ def run_all_checks(
     print("\n" + "=" * 65)
     print("    Sanity Check Report")
     print("=" * 65)
-    results: Dict[str, bool] = {}
+    results = {}
     for chk in checks:
         icon = _PASS if chk["passed"] else _FAIL
         print(f"  {icon}  {chk['name']}")
@@ -214,3 +214,4 @@ def run_all_checks(
         print(f"  {_FAIL}  {len(failed)} check(s) failed: {', '.join(failed)}\n")
 
     return results
+

@@ -9,7 +9,6 @@ WARNING: This is an educational prototype only — NOT for clinical use.
 
 import os
 import glob
-from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 from PIL import Image
@@ -39,8 +38,8 @@ from src.config import (
 # ────────────────────────────────────────────────────────────────────
 # Transforms
 # ────────────────────────────────────────────────────────────────────
-def get_transforms(is_training: bool = True) -> transforms.Compose:
-    """Return an image‑transform pipeline.
+def get_transforms(is_training=True):
+    """Return an image transform pipeline.
 
     Parameters
     ----------
@@ -94,9 +93,9 @@ class MalariaDataset(Dataset):
 
     def __init__(
         self,
-        image_paths: List[str],
-        labels: List[int],
-        transform: Optional[transforms.Compose] = None,
+        image_paths,
+        labels,
+        transform=None,
     ):
         assert len(image_paths) == len(labels), (
             f"Mismatch: {len(image_paths)} images vs {len(labels)} labels"
@@ -106,10 +105,10 @@ class MalariaDataset(Dataset):
         self.transform = transform
 
     # ── magic methods ──────────────────────────────────────────────
-    def __len__(self) -> int:
+    def __len__(self):
         return len(self.image_paths)
 
-    def __getitem__(self, idx: int) -> Tuple[torch.Tensor, torch.Tensor]:
+    def __getitem__(self, idx):
         image = Image.open(self.image_paths[idx]).convert("RGB")
         label = torch.tensor(self.labels[idx], dtype=torch.float32)
 
@@ -119,8 +118,8 @@ class MalariaDataset(Dataset):
         return image, label
 
     # ── helpers ────────────────────────────────────────────────────
-    def get_label_counts(self) -> Dict[str, int]:
-        """Return per‑class sample counts."""
+    def get_label_counts(self):
+        """Return per-class sample counts."""
         unique, counts = np.unique(self.labels, return_counts=True)
         return {CLASS_NAMES[int(u)]: int(c) for u, c in zip(unique, counts)}
 
@@ -129,8 +128,8 @@ class MalariaDataset(Dataset):
 # Collect all image paths + labels from disk
 # ────────────────────────────────────────────────────────────────────
 def _collect_image_paths(
-    data_dir: str = DATA_DIR,
-) -> Tuple[List[str], List[int]]:
+    data_dir=DATA_DIR,
+):
     """Walk the Parasitized / Uninfected folders and return paths + labels.
 
     Only files with common image extensions (.png, .jpg, .jpeg, .bmp, .tif)
@@ -140,8 +139,8 @@ def _collect_image_paths(
     uninfected_dir = os.path.join(data_dir, "Uninfected")
 
     valid_exts = {".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff"}
-    image_paths: List[str] = []
-    labels: List[int] = []
+    image_paths = []
+    labels = []
 
     for img_dir, label in [(parasitized_dir, 1), (uninfected_dir, 0)]:
         if not os.path.isdir(img_dir):
@@ -161,16 +160,12 @@ def _collect_image_paths(
 # Stratified train / val / test split
 # ────────────────────────────────────────────────────────────────────
 def create_data_splits(
-    data_dir: str = DATA_DIR,
-    train_ratio: float = TRAIN_RATIO,
-    val_ratio: float = VAL_RATIO,
-    test_ratio: float = TEST_RATIO,
-    seed: int = SEED,
-) -> Tuple[
-    List[str], List[int],
-    List[str], List[int],
-    List[str], List[int],
-]:
+    data_dir=DATA_DIR,
+    train_ratio=TRAIN_RATIO,
+    val_ratio=VAL_RATIO,
+    test_ratio=TEST_RATIO,
+    seed=SEED,
+):
     """Split image paths into stratified train / val / test sets.
 
     Returns
@@ -214,11 +209,11 @@ def create_data_splits(
 # DataLoader factory
 # ────────────────────────────────────────────────────────────────────
 def get_dataloaders(
-    data_dir: str = DATA_DIR,
-    batch_size: int = BATCH_SIZE,
-    seed: int = SEED,
-    num_workers: int = 0,
-) -> Tuple[DataLoader, DataLoader, DataLoader, MalariaDataset, MalariaDataset, MalariaDataset]:
+    data_dir=DATA_DIR,
+    batch_size=BATCH_SIZE,
+    seed=SEED,
+    num_workers=0,
+):
     """Create train, validation, and test DataLoaders.
 
     Parameters
@@ -257,7 +252,7 @@ def get_dataloaders(
     g = torch.Generator()
     g.manual_seed(seed)
 
-    def _seed_worker(worker_id: int):
+    def _seed_worker(worker_id):
         worker_seed = torch.initial_seed() % 2**32
         np.random.seed(worker_seed)
 
@@ -282,8 +277,8 @@ def get_dataloaders(
 # ────────────────────────────────────────────────────────────────────
 # Class balance analysis
 # ────────────────────────────────────────────────────────────────────
-def print_class_balance(data_dir: str = DATA_DIR) -> Dict[str, int]:
-    """Print a formatted class‑balance summary and return counts.
+def print_class_balance(data_dir=DATA_DIR):
+    """Print a formatted class-balance summary and return counts.
 
     Returns
     -------
@@ -309,11 +304,11 @@ def print_class_balance(data_dir: str = DATA_DIR) -> Dict[str, int]:
 
 
 def print_split_summary(
-    train_labels: List[int],
-    val_labels: List[int],
-    test_labels: List[int],
-) -> None:
-    """Print a formatted per‑split summary."""
+    train_labels,
+    val_labels,
+    test_labels,
+):
+    """Print a formatted per-split summary."""
     print("\n" + "=" * 55)
     print("    Data Split Summary")
     print("=" * 55)
@@ -327,3 +322,6 @@ def print_split_summary(
               f"P: {pos:>5,} ({pos/total*100:.1f}%)  |  "
               f"U: {neg:>5,} ({neg/total*100:.1f}%)")
     print("=" * 55 + "\n")
+
+
+

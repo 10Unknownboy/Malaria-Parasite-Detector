@@ -202,3 +202,5 @@ cython_debug/
 .cursorignore
 .cursorindexingignore
 data/
+.streamlit/config.toml
+.vscode/settings.json

@@ -10,7 +10,7 @@ WARNING: This is an educational prototype only — NOT for clinical use.
 import json
 import os
 from datetime import datetime
-from typing import Any, Dict, Optional
+from datetime import datetime
 
 import pandas as pd
 
@@ -42,7 +42,7 @@ from src.config import (
 )
 
 
-def _safe_read_json(path: str) -> Optional[Dict]:
+def _safe_read_json(path):
     """Read a JSON file or return None on failure."""
     if not os.path.isfile(path):
         return None
@@ -53,7 +53,7 @@ def _safe_read_json(path: str) -> Optional[Dict]:
         return None
 
 
-def _safe_read_csv(path: str) -> Optional[pd.DataFrame]:
+def _safe_read_csv(path):
     """Read a CSV file or return None on failure."""
     if not os.path.isfile(path):
         return None
@@ -63,10 +63,10 @@ def _safe_read_csv(path: str) -> Optional[pd.DataFrame]:
         return None
 
 
-def _count_images(data_dir: str) -> Dict[str, int]:
+def _count_images(data_dir):
     """Count images in Parasitized / Uninfected folders."""
     valid_exts = {".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff"}
-    counts: Dict[str, int] = {}
+    counts = {}
     for class_name in ["Parasitized", "Uninfected"]:
         class_dir = os.path.join(data_dir, class_name)
         if os.path.isdir(class_dir):
@@ -85,11 +85,11 @@ def _count_images(data_dir: str) -> Dict[str, int]:
 # Main generator
 # ────────────────────────────────────────────────────────────────────
 def generate_report(
-    results_dir: str = RESULTS_DIR,
-    models_dir: str = MODELS_DIR,
-    reports_dir: str = REPORTS_DIR,
-    data_dir: str = DATA_DIR,
-) -> str:
+    results_dir=RESULTS_DIR,
+    models_dir=MODELS_DIR,
+    reports_dir=REPORTS_DIR,
+    data_dir=DATA_DIR,
+):
     """Generate ``project_report.md`` from saved artefacts.
 
     Parameters
@@ -313,3 +313,7 @@ def generate_report(
 
     print(f"\n    Report generated → {report_path}")
     return report_path
+
+
+
+

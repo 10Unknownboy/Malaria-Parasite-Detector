@@ -14,8 +14,11 @@ import torch
 SEED = 42
 
 
-def set_seed(seed: int = SEED):
-    """Set random seeds for full reproducibility across Python, NumPy, and PyTorch."""
+def set_seed(seed=SEED):
+    """
+    Set random seeds for full reproducibility across Python, NumPy, and PyTorch.
+    Ensures that identical initialization and mini-batches are used if re-run.
+    """
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
@@ -106,3 +109,6 @@ IMAGENET_STD = [0.229, 0.224, 0.225]
 # Device
 # =============================================================================
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+
+

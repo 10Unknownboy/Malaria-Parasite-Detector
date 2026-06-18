@@ -14,11 +14,11 @@ WARNING: This is an educational prototype only — NOT for clinical use.
 
 import json
 import os
-from typing import Any, Dict, List, Optional
 
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+plt.style.use('dark_background')
 import numpy as np
 import pandas as pd
 import seaborn as sns
@@ -56,11 +56,11 @@ from src.config import (
 # ────────────────────────────────────────────────────────────────────
 @torch.no_grad()
 def evaluate_model(
-    model: nn.Module,
-    test_loader: DataLoader,
-    model_name: str,
-    device: torch.device = DEVICE,
-) -> Dict[str, float]:
+    model,
+    test_loader,
+    model_name,
+    device=DEVICE,
+):
     """Compute metrics on the test set and save diagnostic plots.
 
     Parameters
@@ -84,8 +84,8 @@ def evaluate_model(
     model = model.to(device)
     model.eval()
 
-    all_labels: List[int] = []
-    all_probs: List[float] = []
+    all_labels = []
+    all_probs = []
 
     for images, labels in test_loader:
         images = images.to(device, non_blocking=True)
@@ -134,10 +134,10 @@ def evaluate_model(
 # Confusion matrix
 # ────────────────────────────────────────────────────────────────────
 def _plot_confusion_matrix(
-    y_true: np.ndarray,
-    y_pred: np.ndarray,
-    model_name: str,
-) -> None:
+    y_true,
+    y_pred,
+    model_name,
+):
     cm = confusion_matrix(y_true, y_pred)
     fig, ax = plt.subplots(figsize=(6, 5))
     sns.heatmap(
@@ -158,11 +158,11 @@ def _plot_confusion_matrix(
 # ROC curve
 # ────────────────────────────────────────────────────────────────────
 def _plot_roc_curve(
-    y_true: np.ndarray,
-    y_prob: np.ndarray,
-    auc_score: float,
-    model_name: str,
-) -> None:
+    y_true,
+    y_prob,
+    auc_score,
+    model_name,
+):
     fpr, tpr, _ = roc_curve(y_true, y_prob)
     fig, ax = plt.subplots(figsize=(6, 5))
     ax.plot(fpr, tpr, linewidth=2, label=f"AUC = {auc_score:.4f}")
@@ -184,12 +184,12 @@ def _plot_roc_curve(
 # ────────────────────────────────────────────────────────────────────
 def _plot_sample_predictions(
     dataset,
-    all_preds: np.ndarray,
-    all_probs: np.ndarray,
-    model_name: str,
-    n_correct: int = 4,
-    n_incorrect: int = 4,
-) -> None:
+    all_preds,
+    all_probs,
+    model_name,
+    n_correct=4,
+    n_incorrect=4,
+):
     """Save a grid showing correct and incorrect predictions."""
     mean = np.array(IMAGENET_MEAN)
     std = np.array(IMAGENET_STD)
@@ -257,8 +257,8 @@ def _plot_sample_predictions(
 # Multi‑model comparison
 # ────────────────────────────────────────────────────────────────────
 def compare_models(
-    metrics_dict: Dict[str, Dict[str, float]],
-) -> Dict[str, Any]:
+    metrics_dict,
+):
     """Compare multiple models and determine the best one.
 
     Parameters
@@ -314,10 +314,10 @@ def compare_models(
 # Metadata export
 # ────────────────────────────────────────────────────────────────────
 def save_all_metadata(
-    all_metrics: Dict[str, Dict[str, float]],
-    all_histories: Dict[str, Dict[str, List]],
-    models_dict: Dict[str, nn.Module],
-) -> None:
+    all_metrics,
+    all_histories,
+    models_dict,
+):
     """Persist training artefacts consumed downstream.
 
     Saves
@@ -331,7 +331,7 @@ def save_all_metadata(
     create_dirs()
 
     # 1. model_config.json ─────────────────────────────────────────
-    config_info: Dict[str, Any] = {}
+    config_info = {}
     for name, model in models_dict.items():
         total = sum(p.numel() for p in model.parameters())
         trainable = sum(p.numel() for p in model.parameters() if p.requires_grad)
@@ -350,7 +350,7 @@ def save_all_metadata(
 
     # 3. training_metrics.json ─────────────────────────────────────
     # Convert numpy / tensor values to plain Python types
-    clean_histories: Dict[str, Any] = {}
+    clean_histories = {}
     for name, hist in all_histories.items():
         clean_histories[name] = {
             k: [float(v) if isinstance(v, (float, int, np.floating)) else v
@@ -373,7 +373,13 @@ def save_all_metadata(
     print("    All metadata saved.")
 
 
-def _write_json(path: str, data: Any) -> None:
+def _write_json(path, data):
     with open(path, "w") as f:
         json.dump(data, f, indent=2, default=str)
     print(f"     → {path}")
+
+
+
+
+
+

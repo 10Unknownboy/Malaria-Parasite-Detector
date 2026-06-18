@@ -14,12 +14,13 @@ WARNING: This is an educational prototype only — NOT for clinical use.
 """
 
 import os
-from typing import List, Optional, Tuple
+import os
 
 import cv2
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+plt.style.use('dark_background')
 import numpy as np
 import torch
 import torch.nn as nn
@@ -55,12 +56,12 @@ class GradCAM:
     >>> heatmap = cam.generate_cam(input_tensor)  # (H, W) numpy array
     """
 
-    def __init__(self, model: nn.Module, target_layer: nn.Module):
+    def __init__(self, model, target_layer):
         self.model = model
         self.target_layer = target_layer
 
-        self._activations: Optional[torch.Tensor] = None
-        self._gradients: Optional[torch.Tensor] = None
+        self._activations = None
+        self._gradients = None
 
         # Register hooks
         self._fwd_hook = target_layer.register_forward_hook(self._forward_hook)
@@ -76,9 +77,9 @@ class GradCAM:
     # ── main API ──────────────────────────────────────────────────
     def generate_cam(
         self,
-        input_tensor: torch.Tensor,
-        target_class: Optional[int] = None,
-    ) -> np.ndarray:
+        input_tensor,
+        target_class=None,
+    ):
         """Generate a Grad‑CAM heatmap for *input_tensor*.
 
         Parameters
@@ -148,7 +149,7 @@ class GradCAM:
 # ────────────────────────────────────────────────────────────────────
 # Target‑layer auto‑detection
 # ────────────────────────────────────────────────────────────────────
-def get_target_layer(model: nn.Module, model_name: str) -> nn.Module:
+def get_target_layer(model, model_name):
     """Return the appropriate Grad‑CAM target layer for a known architecture.
 
     Parameters
@@ -179,10 +180,10 @@ def get_target_layer(model: nn.Module, model_name: str) -> nn.Module:
 # Overlay helper
 # ────────────────────────────────────────────────────────────────────
 def overlay_heatmap(
-    image: np.ndarray,
-    heatmap: np.ndarray,
-    alpha: float = 0.4,
-) -> np.ndarray:
+    image,
+    heatmap,
+    alpha=0.4,
+):
     """Overlay a Grad‑CAM heatmap on the original image.
 
     Parameters
@@ -214,7 +215,7 @@ def overlay_heatmap(
 # ────────────────────────────────────────────────────────────────────
 # De‑normalise tensor → displayable numpy image
 # ────────────────────────────────────────────────────────────────────
-def _denormalize(tensor: torch.Tensor) -> np.ndarray:
+def _denormalize(tensor):
     """Convert a normalised ``(C, H, W)`` tensor to ``(H, W, 3)`` float image."""
     mean = np.array(IMAGENET_MEAN)
     std = np.array(IMAGENET_STD)
@@ -227,12 +228,12 @@ def _denormalize(tensor: torch.Tensor) -> np.ndarray:
 # Grid generation
 # ────────────────────────────────────────────────────────────────────
 def generate_gradcam_grid(
-    model: nn.Module,
-    model_name: str,
+    model,
+    model_name,
     dataset,
-    device: torch.device = DEVICE,
-    num_samples: int = 8,
-) -> List[str]:
+    device=DEVICE,
+    num_samples=8,
+):
     """Generate a grid of Original / Heatmap / Overlay for both classes.
 
     Selects ``num_samples // 2`` parasitized and ``num_samples // 2``
@@ -275,7 +276,7 @@ def generate_gradcam_grid(
     sel_neg = np.random.choice(neg_idx, min(n_each, len(neg_idx)), replace=False)
     selected = list(sel_pos) + list(sel_neg)
 
-    saved_paths: List[str] = []
+    saved_paths = []
 
     # ── individual images ─────────────────────────────────────────
     for i, idx in enumerate(selected):
@@ -351,3 +352,9 @@ def generate_gradcam_grid(
 
     print(f"    Grad‑CAM outputs → {save_dir}/ ({len(saved_paths)} files)")
     return saved_paths
+
+
+
+
+
+

@@ -10,6 +10,17 @@ from PIL import Image
 from src.config import DATA_DIR, RESULTS_DIR
 
 def generate_data_insights(data_dir=DATA_DIR, output_file=None):
+    """
+    Analyzes the dataset directory to compute total counts, class balance, 
+    and average image dimensions, then writes a formatted text report to disk.
+    
+    Parameters
+    ----------
+    data_dir : str
+        The root path to the training dataset.
+    output_file : str, optional
+        Where to save the text report.
+    """
     if output_file is None:
         output_file = os.path.join(RESULTS_DIR, "data_insights.txt")
         
@@ -86,3 +97,8 @@ def generate_data_insights(data_dir=DATA_DIR, output_file=None):
         f.write("\n".join(insights))
         
     print(f"   Data insights saved to: {output_file}")
+
+
+
+
+

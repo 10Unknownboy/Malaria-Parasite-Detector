@@ -29,9 +29,9 @@ class ResNet18Model(nn.Module):
 
     def __init__(
         self,
-        num_classes: int = 1,
-        pretrained: bool = True,
-        freeze_backbone: bool = False,
+        num_classes=1,
+        pretrained=True,
+        freeze_backbone=False,
     ):
         super().__init__()
 
@@ -58,7 +58,7 @@ class ResNet18Model(nn.Module):
             param.requires_grad = True
 
     # ── forward pass ──────────────────────────────────────────────
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
+    def forward(self, x):
         """
         Parameters
         ----------
@@ -71,11 +71,22 @@ class ResNet18Model(nn.Module):
         return self.backbone(x)
 
     # ── Grad‑CAM helpers ──────────────────────────────────────────
-    def get_last_conv_layer(self) -> nn.Module:
+    def get_last_conv_layer(self):
         """Return the last convolutional block (``layer4[-1]``)."""
         return self.backbone.layer4[-1]
 
     @staticmethod
-    def get_last_conv_layer_name() -> str:
+    def get_last_conv_layer_name():
         """Return the dotted attribute path to the Grad‑CAM target layer."""
         return "backbone.layer4"
+
+
+
+
+
+
+
+
+
+
+

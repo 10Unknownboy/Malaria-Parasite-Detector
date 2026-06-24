@@ -113,6 +113,9 @@ class GradCAM:
         gradients = self._gradients  # (1, C, h, w)
         activations = self._activations  # (1, C, h, w)
 
+        if gradients is None or activations is None:
+            raise RuntimeError("Hooks not called. Ensure backward() was executed.")
+        
         weights = gradients.mean(dim=(2, 3), keepdim=True)  # (1, C, 1, 1)
         cam = (weights * activations).sum(dim=1, keepdim=True)  # (1, 1, h, w)
         cam = F.relu(cam)
@@ -197,7 +200,7 @@ def overlay_heatmap(
     -------
     ndarray, shape ``(H, W, 3)``, dtype float in ``[0, 1]``
     """
-    heatmap_uint8 = np.uint8(255 * heatmap)
+    heatmap_uint8 = (heatmap * 255).astype(np.uint8)
     heatmap_coloured = cv2.applyColorMap(heatmap_uint8, cv2.COLORMAP_JET)
     heatmap_coloured = cv2.cvtColor(heatmap_coloured, cv2.COLOR_BGR2RGB)
     heatmap_float = heatmap_coloured.astype(np.float32) / 255.0

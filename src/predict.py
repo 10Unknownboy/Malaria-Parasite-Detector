@@ -124,7 +124,12 @@ def predict_single_image(
         transform = get_transforms(is_training=False)
 
     image = Image.open(image_path).convert("RGB")
-    input_tensor = transform(image).unsqueeze(0).to(device)
+    tensor = transform(image)
+    # Some static analyzers may think `transform(image)` returns a PIL Image.
+    # Ensure we have a torch.Tensor with an `unsqueeze` method.
+    if not isinstance(tensor, torch.Tensor):
+        tensor = transforms.ToTensor()(image)
+    input_tensor = tensor.unsqueeze(0).to(device)
 
     with torch.no_grad():
         logit = model(input_tensor)
@@ -187,7 +192,10 @@ def predict_with_gradcam(
 
     # ── Grad‑CAM ──────────────────────────────────────────────────
     image = Image.open(image_path).convert("RGB")
-    input_tensor = transform(image).unsqueeze(0).to(device)
+    tensor = transform(image)
+    if not isinstance(tensor, torch.Tensor):
+        tensor = transforms.ToTensor()(image)
+    input_tensor = tensor.unsqueeze(0).to(device)
 
     target_layer = get_target_layer(model, model_name)
     cam = GradCAM(model, target_layer)

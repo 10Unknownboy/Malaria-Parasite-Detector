@@ -46,8 +46,8 @@ class ResNet18Model(nn.Module):
 
         # ── replace final FC layer ────────────────────────────────
         in_features = self.backbone.fc.in_features  # 512
-        self.backbone.fc = nn.Sequential(
-            nn.Linear(in_features, 256),
+        self.backbone.fc = nn.Linear(in_features, 256)
+        self.classifier = nn.Sequential(
             nn.ReLU(inplace=True),
             nn.Dropout(0.5),
             nn.Linear(256, num_classes),

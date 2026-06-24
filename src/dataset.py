@@ -256,18 +256,33 @@ def get_dataloaders(
         worker_seed = torch.initial_seed() % 2**32
         np.random.seed(worker_seed)
 
-    loader_kwargs = dict(
+    train_loader = DataLoader(
+        train_dataset,
         batch_size=batch_size,
+        shuffle=True,
         num_workers=num_workers,
         pin_memory=torch.cuda.is_available(),
         worker_init_fn=_seed_worker,
         generator=g,
     )
-
-    train_loader = DataLoader(train_dataset, shuffle=True, **loader_kwargs)
-    val_loader = DataLoader(val_dataset, shuffle=False, **loader_kwargs)
-    test_loader = DataLoader(test_dataset, shuffle=False, **loader_kwargs)
-
+    val_loader = DataLoader(
+        val_dataset,
+        batch_size=batch_size,
+        shuffle=False,
+        num_workers=num_workers,
+        pin_memory=torch.cuda.is_available(),
+        worker_init_fn=_seed_worker,
+        generator=g,
+    )
+    test_loader = DataLoader(
+        test_dataset,
+        batch_size=batch_size,
+        shuffle=False,
+        num_workers=num_workers,
+        pin_memory=torch.cuda.is_available(),
+        worker_init_fn=_seed_worker,
+        generator=g,
+    )
     return (
         train_loader, val_loader, test_loader,
         train_dataset, val_dataset, test_dataset,

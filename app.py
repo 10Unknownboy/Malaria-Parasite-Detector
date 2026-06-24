@@ -57,7 +57,9 @@ def load_metadata():
         }, inplace=True)
         # Create a display name column mapping raw model names to friendly names
         rev_map = {v: k for k, v in MODEL_OPTIONS.items()}
-        comp_df["Model"] = comp_df["ModelKey"].map(lambda x: rev_map.get(x, x))
+        comp_df["Model"] = comp_df["ModelKey"].map(
+            lambda x: rev_map.get(x, x) if pd.notna(x) else x
+        )
     
     # Load model configuration JSON
     config = {}
@@ -147,8 +149,9 @@ def _load_model(model_name):
         return None, str(exc)
 
 model, load_error = _load_model(model_key)
-if load_error:
-    st.sidebar.error(f"Error loading model: {load_error}")
+if load_error or model is None:
+    error_msg = load_error if load_error else "Unknown error loading the selected model."
+    st.sidebar.error(f"Error loading model: {error_msg}")
     st.stop()
 
 # ==========================================
@@ -317,6 +320,10 @@ with tab3:
         runs inference using the currently selected model, 
         and returns the prediction.
         """
+        if model is None:
+            st.error("Model is not loaded. Please check the sidebar for errors.")
+            return None, None, None
+            
         transform = get_transforms(is_training=False)
         input_tensor = transform(image_pil).unsqueeze(0).to(DEVICE)
         
@@ -362,8 +369,9 @@ with tab3:
                         target_layer = get_target_layer(model, model_key)
                         cam_obj = GradCAM(model, target_layer)
                         
-                        transform = get_transforms(is_training=False)
-                        input_grad = transform(image).unsqueeze(0).to(DEVICE)
+                        image_transform = get_transforms(is_training=False)
+                        input_grad: torch.Tensor = image_transform(image)
+                        input_grad = input_grad.unsqueeze(0).to(DEVICE)
                         heatmap = cam_obj.generate_cam(input_grad)
                         cam_obj.remove_hooks()
                         

@@ -149,7 +149,7 @@ If you have a local NVIDIA GPU (or don't mind waiting for CPU training), you can
 
 2. **Run the local training orchestrator**:
    ```bash
-   python run_training_local.py
+   python main.py
    ```
    This script will automatically execute all sanity checks, data splitting, model training, evaluation, robustness testing, Grad-CAM generation, and report building. All results will be saved exactly as they would be in the Colab workflow.
 

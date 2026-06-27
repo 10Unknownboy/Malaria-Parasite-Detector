@@ -149,7 +149,7 @@ If you have a local NVIDIA GPU (or don't mind waiting for CPU training), you can
 
 2. **Run the local training orchestrator**:
    ```bash
-   python run_training_local.py
+   python main.py
    ```
    This script will automatically execute all sanity checks, data splitting, model training, evaluation, robustness testing, Grad-CAM generation, and report building. All results will be saved exactly as they would be in the Colab workflow.
 
@@ -173,35 +173,6 @@ You can train the models on Google Colab using the provided notebook which handl
 4. **Use Models Locally**:
    - Extract the downloaded `.zip` file on your local PC.
    - Paste the contents into your local `models/` folder. All saved `.pth` files, graphs, and JSON reports will be inside.
-
----
-
-##  Workflow
-
-```
-┌─────────────────────────────────────────────────┐
-│                 Google Colab (GPU)                │
-│                                                   │
-│  Dataset Download → Sanity Checks → EDA          │
-│       ↓                                           │
-│  Train CNN → Train ResNet-18 → Train MobileNetV2 │
-│       ↓                                           │
-│  Evaluate All → Compare → Select Best            │
-│       ↓                                           │
-│  Robustness Tests → Grad-CAM → Export All        │
-│       ↓                                           │
-│  Save to Google Drive                            │
-└─────────────────────┬───────────────────────────┘
-                      │ Download .pth + metadata
-                      ▼
-┌─────────────────────────────────────────────────┐
-│               Local PC (CPU)                     │
-│                                                   │
-│  Load Models → CLI Inference / Streamlit App     │
-│  Select: CNN | ResNet-18 | MobileNetV2           │
-│  Output: Prediction + Confidence + Grad-CAM      │
-└─────────────────────────────────────────────────┘
-```
 
 ---
 
@@ -274,7 +245,7 @@ streamlit run app.py
 ```
 
 The app provides:
-- Drag-and-drop image upload
+- Image upload
 - Model selection dropdown (all 3 models)
 - Prediction with confidence score
 - Grad-CAM attention visualization
@@ -286,9 +257,9 @@ The app provides:
 ###  Final Training Results
 After training all three architectures on Google Colab, **MobileNet V2** emerged as the best-performing model with the following metrics on the test set:
 - **Accuracy**: 97.0%
-- **Precision**: 97.3%
-- **Recall**: 96.7%
-- **F1-Score**: 96.9%
+- **Precision**: 98.5%
+- **Recall**: 95.6%
+- **F1-Score**: 97.0%
 - **ROC-AUC**: 99.6%
 
 The following files were generated and are available in the `models/` folder:

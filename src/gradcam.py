@@ -5,10 +5,6 @@ Produces heatmaps showing which regions of a cell image the model attends to
 when making a prediction.  Works with any architecture that has convolutional
 layers (SimpleCNN, ResNet‑18, MobileNetV2).
 
-References
-----------
-Selvaraju et al., *"Grad-CAM: Visual Explanations from Deep Networks via
-Gradient-based Localization"*, ICCV 2017.
 
 WARNING: This is an educational prototype only — NOT for clinical use.
 """
